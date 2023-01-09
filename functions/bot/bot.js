@@ -3,7 +3,7 @@ const { Telegraf } = require("telegraf")
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
 // Create a new connection to the Gnosis Chain
-const w3 = new Web3(new Web3.providers.HttpProvider('wss://rpc.gnosischain.com/wss'));
+const w3 = new Web3(new Web3.providers.HttpProvider('https://rpc.gnosischain.com/'));
 
 const contractAddress = '0xd3226b12e6188133b19ac0419f34b0ed5b10f069';
 
