@@ -1,5 +1,11 @@
+const Web3 = require('web3');
 const { Telegraf } = require("telegraf")
 const bot = new Telegraf(process.env.BOT_TOKEN)
+
+// Create a new connection to the Gnosis Chain
+const w3 = new Web3(new Web3.providers.HttpProvider('https://rpc.gnosischain.com/'));
+
+const contractAddress = '0xd3226b12e6188133b19ac0419f34b0ed5b10f069';
 
 bot.start(ctx => {
   console.log("Received /start command")
@@ -14,6 +20,23 @@ bot.start(ctx => {
 bot.command('thumbsup', async (ctx) => {
     try {
         ctx.reply('Here you go 👍!')
+    } catch (error) {
+        console.log('error', error)
+        ctx.reply('error sending image')
+    }
+})
+
+bot.command('balance', async (ctx) => {
+    try {
+        w3.eth.getBalance(contractAddress, (error, result) => {
+           if (error) {
+              console.error(error);
+              bot.sendMessage("Sorry, there was an error getting the balance of the contract.");
+           } else {
+              // Send a message with the contract balance
+              bot.sendMessage("The balance of this contract is ${result} in Wei.");
+           }
+        });
     } catch (error) {
         console.log('error', error)
         ctx.reply('error sending image')
