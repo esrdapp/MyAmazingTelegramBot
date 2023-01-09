@@ -3,7 +3,7 @@ const { Telegraf } = require("telegraf")
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
 // Create a new connection to the Gnosis Chain
-const w3 = new Web3(new Web3.providers.HttpProvider('https://rpc.gnosischain.com/'));
+const w3 = new Web3(new Web3.providers.HttpProvider('wss://rpc.gnosischain.com/wss'));
 
 const contractAddress = '0xd3226b12e6188133b19ac0419f34b0ed5b10f069';
 
@@ -27,21 +27,22 @@ bot.command('thumbsup', async (ctx) => {
 })
 
 bot.command('balance', async (ctx) => {
-    try {
-        w3.eth.getBalance(contractAddress, (error, result) => {
-           if (error) {
-              console.error(error);
-              bot.sendMessage("Sorry, there was an error getting the balance of the contract.");
-           } else {
-              // Send a message with the contract balance
-              bot.sendMessage("The balance of this contract is ${result} in Wei.");
-           }
-        });
-    } catch (error) {
-        console.log('error', error)
-        ctx.reply('error sending image')
+  // Get the chat ID and message ID of the message
+  // const chatId = message.chat.id;
+  // const messageId = message.message_id;
+
+  // Get the balance of the contract
+  w3.eth.getBalance(contractAddress, (error, result) => {
+    if (error) {
+      console.error(error);
+      bot.sendMessage('Sorry, there was an error getting the balance of the contract.');
+    } else {
+      // Send a message with the contract balance
+      bot.sendMessage(`The balance of the contract is ${result} wei.`);
     }
-})
+  } 
+ );
+});
 
 exports.handler = async event => {
   try {
