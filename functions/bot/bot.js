@@ -11,6 +11,16 @@ bot.start(ctx => {
   }
 })
 
+bot.thumbsup(ctx => {
+  console.log("Received /start command")
+  try {
+    return ctx.reply("Here you go 👍")
+  } catch (e) {
+    console.error("error in start action:", e)
+    return ctx.reply("Error occured")
+  }
+})
+
 // AWS event handler syntax (https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html)
 exports.handler = async event => {
   try {
